@@ -36,9 +36,7 @@ class ParkingService(object):
             'Timeout': params.get('timeout'),
             'TimeoutChannel': params.get('timeout_channel'),
         }
-        print(park_action)
         parking = self.amid.action('park', park_action)
-        print(parking)
         return None
 
     def _parking(self, parking):
