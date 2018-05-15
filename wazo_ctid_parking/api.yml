@@ -1,0 +1,86 @@
+paths:
+  /parking:
+    get:
+      summary: Get parking list
+      description: '**Required ACL:** `ctid-ng.parking.read`'
+      tags:
+      - parking
+      responses:
+        '200':
+          description: The list of parking
+          schema:
+            $ref: '#/definitions/ParkingList'
+        '503':
+          $ref: '#/responses/AnotherServiceUnavailable'
+  /parking/{parking_name}:
+    get:
+      summary: Get parking status
+      description: '**Required ACL:** `ctid-ng.parking.{parking_name}.read`'
+      parameters:
+        - $ref: '#/parameters/ParkingName'
+      tags:
+      - parking
+      responses:
+        '200':
+          description: The status of a parking
+          schema:
+            $ref: '#/definitions/Parking'
+        '503':
+          $ref: '#/responses/AnotherServiceUnavailable'
+    post:
+      summary: Park call
+      description: '**Required ACL:** `ctid-ng.parking.{parking_name}.park.create`'
+      parameters:
+        - $ref: '#/parameters/ParkingName'
+        - $ref: '#/parameters/ParkCall'
+      tags:
+      - parking
+      responses:
+        '201':
+          description: Call has been parked
+          schema:
+            $ref: '#/definitions/Parking'
+        '503':
+          $ref: '#/responses/AnotherServiceUnavailable'
+definitions:
+  Parking:
+    type: object
+    properties:
+      id:
+        description: Unique identifier of the parking
+        type: string
+  ParkingList:
+    type: object
+    properties:
+      items:
+        $ref: '#/definitions/Parking'
+  ParkCall:
+    type: object
+    properties:
+      channel:
+        description: Channel to park
+        type: string
+        required: true
+      announce_channel:
+        description: Announce channel
+        type: string
+      timeout:
+        description: Timeout
+        type: integer
+      timeout_channel:
+        description: Timeout channel
+        type: integer
+parameters:
+  ParkingName:
+    name: parking_name
+    in: path
+    description: Name of the parking
+    required: true
+    type: string
+  ParkCall:
+    name: body
+    in: body
+    description: Park call
+    required: true
+    schema:
+      $ref: '#/definitions/ParkCall'

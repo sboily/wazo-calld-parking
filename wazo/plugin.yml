@@ -1,0 +1,9 @@
+name: wazo-ctid-parking
+namespace: sboily
+version: 0.0.1
+author: Sylvain Boily
+display_name: CTI parking
+tags:
+  - experimental
+  - parking
+homepage: https://github.com/sboily/wazo-ctid-parking
