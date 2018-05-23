@@ -17,6 +17,7 @@ class ParkingBusEventHandler(object):
 
     def subscribe(self, bus_consumer):
         bus_consumer.on_ami_event('ParkedCall', self._parked_call)
+        bus_consumer.on_ami_event('UnParkedCall', self._unparked_call)
         bus_consumer.on_ami_event('ParkedCallGiveUp', self._parked_call_give_up)
         bus_consumer.on_ami_event('ParkedCallSwap', self._parked_call_swap)
         bus_consumer.on_ami_event('ParkedCallTimeout', self._parked_call_timeout)
@@ -28,6 +29,15 @@ class ParkingBusEventHandler(object):
             required_acl='events.parking'
         )
         bus_event.routing_key = 'parking.parked_call'
+        self.bus_publisher.publish(bus_event)
+
+    def _unparked_call(self, event):
+        bus_event = ArbitraryEvent(
+            name='parking_unparked_call',
+            body=event,
+            required_acl='events.parking'
+        )
+        bus_event.routing_key = 'parking.unparked_call'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_give_up(self, event):
