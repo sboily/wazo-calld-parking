@@ -1,0 +1,5 @@
+xivo-ctid-ng:
+  system_user: www-data
+  acl:
+    - 'amid.action.parkinglots.*'
+    - 'amid.action.parkedcalls.*'

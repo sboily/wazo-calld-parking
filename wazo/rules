@@ -13,10 +13,12 @@ case "$1" in
         ;;
 
     install)
+	wazo-auth-keys service update
         systemctl restart xivo-ctid-ng
         ;;
 
     uninstall)
+	wazo-auth-keys service update
         systemctl restart xivo-ctid-ng
         ;;
 
