@@ -3,7 +3,7 @@
 
 import logging
 
-from event import ArbitraryEvent
+from .event import ArbitraryEvent
 
 
 logger = logging.getLogger(__name__)
