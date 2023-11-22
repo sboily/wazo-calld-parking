@@ -23,7 +23,7 @@ class ParkingListResource(AuthResource):
         parking_list = self._parking_service.list_parking()
 
         return {
-            'items': parking_list_schema.dump(parking_list, many=True).data
+            'items': parking_list_schema.dump(parking_list, many=True)
         }, 200
 
 
@@ -40,7 +40,7 @@ class ParkingResource(AuthResource):
 
     @required_acl('calld.parking.{parking_name}.park.create')
     def post(self, parking_name):
-        request_body = park_schema.load(request.get_json(force=True)).data
+        request_body = park_schema.load(request.get_json(force=True))
         result = self._parking_service.park_call(parking_name, request_body)
 
         return result, 201
