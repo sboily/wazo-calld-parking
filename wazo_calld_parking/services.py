@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2018-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
 import logging
 import urllib
 
 
-class ParkingService(object):
+class ParkingService:
 
     def __init__(self, amid):
         self.amid = amid

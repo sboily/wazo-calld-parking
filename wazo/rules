@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2018 Sylvain Boily
+# Copyright 2018-2023 Sylvain Boily
 # SPDX-License-Identifier: GPL-3.0+
 
 case "$1" in
@@ -8,18 +8,18 @@ case "$1" in
         ;;
 
     package)
-        tar xvf dist/wazo-ctid-parking-*.tar.gz -C ${pkgdir}
+        tar xvf dist/wazo-calld-parking-*.tar.gz -C ${pkgdir}
         cp -R etc ${pkgdir}/
         ;;
 
     install)
 	wazo-auth-keys service update
-        systemctl restart xivo-ctid-ng
+        systemctl restart wazo-calld
         ;;
 
     uninstall)
 	wazo-auth-keys service update
-        systemctl restart xivo-ctid-ng
+        systemctl restart wazo-calld
         ;;
 
     *)

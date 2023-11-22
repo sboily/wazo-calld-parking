@@ -1,9 +1,10 @@
-name: wazo-ctid-parking
-namespace: sboily
-version: 0.0.1
+name: wazo-calld-parking
+namespace: quintana
+version: 0.0.2
 author: Sylvain Boily
-display_name: CTI parking
+display_name: Parking support in calld
+min_wazo_version: 23.13
 tags:
   - experimental
   - parking
-homepage: https://github.com/sboily/wazo-ctid-parking
+homepage: https://github.com/sboily/wazo-calld-parking

@@ -1,26 +1,28 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
-from setuptools import setup
+import yaml
+
 from setuptools import find_packages
+from setuptools import setup
 
+with open('wazo/plugin.yml') as file:
+    metadata = yaml.load(file)
 
 setup(
-    name='wazo-ctid-parking',
-    version='0.0.1',
-    description='Wazo CTI parking',
-    author='Sylvain Boily',
-    author_email='sylvain@wazo.io',
-    url='http://www.wazo.io/',
-    license='GPLv3',
+    name=metadata['name'],
+    version=metadata['version'],
+    description=metadata['display_name'],
+    author=metadata['author'],
+    url=metadata['homepage'],
+
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'wazo_ctid_parking': ['api.yml'],
+        'wazo_calld_parking': ['api.yml'],
     },
     entry_points={
-        'xivo_ctid_ng.plugins': [
-            'parking = wazo_ctid_parking.plugin:Plugin'
-        ],
-    },
+        'wazo_calld.plugins': [
+            'parking = wazo_calld_parking.plugin:Plugin'
+        ]
+    }
 )

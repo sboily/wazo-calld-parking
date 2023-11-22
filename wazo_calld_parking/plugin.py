@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2018-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
-from xivo_amid_client import Client as AmidClient
-from xivo_auth_client import Client as AuthClient
+from wazo_amid_client import Client as AmidClient
+from wazo_auth_client import Client as AuthClient
 
 from .resources import (
     ParkingListResource,

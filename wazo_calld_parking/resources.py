@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
-# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2018-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0+
 
 
 from flask import request
 
-from xivo_ctid_ng.auth import required_acl
-from xivo_ctid_ng.rest_api import AuthResource
+from wazo_calld.auth import required_acl
+from wazo_calld.http import AuthResource
 
 from .schema import (
     parking_list_schema,

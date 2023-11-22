@@ -2,7 +2,7 @@ paths:
   /parking:
     get:
       summary: Get parking list
-      description: '**Required ACL:** `ctid-ng.parking.read`'
+      description: '**Required ACL:** `calld.parking.read`'
       tags:
       - parking
       responses:
@@ -15,7 +15,7 @@ paths:
   /parking/{parking_name}:
     get:
       summary: Get parking status
-      description: '**Required ACL:** `ctid-ng.parking.{parking_name}.read`'
+      description: '**Required ACL:** `calld.parking.{parking_name}.read`'
       parameters:
         - $ref: '#/parameters/ParkingName'
       tags:
@@ -29,7 +29,7 @@ paths:
           $ref: '#/responses/AnotherServiceUnavailable'
     post:
       summary: Park call
-      description: '**Required ACL:** `ctid-ng.parking.{parking_name}.park.create`'
+      description: '**Required ACL:** `calld.parking.{parking_name}.park.create`'
       parameters:
         - $ref: '#/parameters/ParkingName'
         - $ref: '#/parameters/ParkCall'
