@@ -18,7 +18,7 @@ class ParkingListResource(AuthResource):
     def __init__(self, parking_service):
         self._parking_service = parking_service
 
-    @required_acl('ctid-ng.parking.read')
+    @required_acl('calld.parking.read')
     def get(self):
         parking_list = self._parking_service.list_parking()
 
@@ -32,13 +32,13 @@ class ParkingResource(AuthResource):
     def __init__(self, parking_service):
         self._parking_service = parking_service
 
-    @required_acl('ctid-ng.parking.{parking_name}.read')
+    @required_acl('calld.parking.{parking_name}.read')
     def get(self, parking_name):
         return {
                 'items': self._parking_service.get_parked_calls(parking_name)
         }, 200
 
-    @required_acl('ctid-ng.parking.{parking_name}.park.create')
+    @required_acl('calld.parking.{parking_name}.park.create')
     def post(self, parking_name):
         request_body = park_schema.load(request.get_json(force=True)).data
         result = self._parking_service.park_call(parking_name, request_body)
