@@ -27,7 +27,7 @@ class ParkingBusEventHandler(object):
             body=event,
             required_acl='events.parking'
         )
-        bus_event.routing_key = 'parking.parked_call'
+        bus_event.routing_key = 'calls.parking.parked_call'
         self.bus_publisher.publish(bus_event)
 
     def _unparked_call(self, event):
@@ -36,7 +36,7 @@ class ParkingBusEventHandler(object):
             body=event,
             required_acl='events.parking'
         )
-        bus_event.routing_key = 'parking.unparked_call'
+        bus_event.routing_key = 'calls.parking.unparked_call'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_give_up(self, event):
@@ -45,7 +45,7 @@ class ParkingBusEventHandler(object):
             body=event,
             required_acl='events.parking'
         )
-        bus_event.routing_key = 'parking.parked_call_give_up'
+        bus_event.routing_key = 'calls.parking.parked_call_give_up'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_swap(self, event):
@@ -54,7 +54,7 @@ class ParkingBusEventHandler(object):
             body=event,
             required_acl='events.parking'
         )
-        bus_event.routing_key = 'parking.parked_call_swap'
+        bus_event.routing_key = 'calls.parking.parked_call_swap'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_timeout(self, event):
@@ -63,5 +63,5 @@ class ParkingBusEventHandler(object):
             body=event,
             required_acl='events.parking'
         )
-        bus_event.routing_key = 'parking.parked_call_timeout'
+        bus_event.routing_key = 'calls.parking.parked_call_timeout'
         self.bus_publisher.publish(bus_event)
