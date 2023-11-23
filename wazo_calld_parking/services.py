@@ -24,7 +24,6 @@ class ParkingService:
         p = []
         for park in parked_calls:
             if park.get('Event') == 'ParkedCall':
-                print(park)
                 p.append(self._parked_call(park))
         return p
 
@@ -70,7 +69,7 @@ class ParkingService:
             'parker_dial_string': parked_call.get('ParkerDialString'),
             'parkee_caller_id_num': parked_call.get('ParkeeCallerIDNum'),
             'parkee_caller_id_name': parked_call.get('ParkeeCallerIDName'),
-            'parkee_unique_id': parked_call.get('ParkeeUniqueid'),
+            'parkee_uniqueid': parked_call.get('ParkeeUniqueid'),
             'parking_lot': parked_call.get('Parkinglot'),
             'parkee_language': parked_call.get('ParkeeLanguage'),
             'parkee_channel': parked_call.get('ParkeeChannel'),
