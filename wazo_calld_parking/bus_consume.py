@@ -3,16 +3,23 @@
 
 import logging
 
-from .event import ArbitraryEvent
+from .events import (
+    ParkedCallEvent
+    UnParkedCallEvent
+    ParkedCallGiveUp
+    ParkedCallSwap
+    ParkedCallTimeout
+)
 
 
 logger = logging.getLogger(__name__)
 
 
-class ParkingBusEventHandler(object):
+class ParkingBusEventHandler:
 
-    def __init__(self, bus_publisher):
+    def __init__(self, bus_publisher, confd):
         self.bus_publisher = bus_publisher
+        self.confd = confd
 
     def subscribe(self, bus_consumer):
         bus_consumer.subscribe('ParkedCall', self._parked_call)
@@ -22,46 +29,46 @@ class ParkingBusEventHandler(object):
         bus_consumer.subscribe('ParkedCallTimeout', self._parked_call_timeout)
 
     def _parked_call(self, event):
-        bus_event = ArbitraryEvent(
-            name='parking_parked_call',
-            body=event,
-            required_acl='events.parking'
+        tenant_uuid = self._extract_tenant_uuid(event)
+        bus_event = ParkedCallEvent(
+            event,
+            tenant_uuid
         )
-        bus_event.routing_key = 'calls.parking.parked_call'
         self.bus_publisher.publish(bus_event)
 
     def _unparked_call(self, event):
-        bus_event = ArbitraryEvent(
-            name='parking_unparked_call',
-            body=event,
-            required_acl='events.parking'
+        tenant_uuid = self._extract_tenant_uuid(event)
+        bus_event = UnParkedCallEvent(
+            event,
+            tenant_uuid
         )
-        bus_event.routing_key = 'calls.parking.unparked_call'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_give_up(self, event):
-        bus_event = ArbitraryEvent(
-            name='parking_parked_call_give_up',
-            body=event,
-            required_acl='events.parking'
+        tenant_uuid = self._extract_tenant_uuid(event)
+        bus_event = ParkedCallGiveUpEvent(
+            event,
+            tenant_uuid
         )
-        bus_event.routing_key = 'calls.parking.parked_call_give_up'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_swap(self, event):
-        bus_event = ArbitraryEvent(
-            name='parking_parked_call_swap',
-            body=event,
-            required_acl='events.parking'
+        tenant_uuid = self._extract_tenant_uuid(event)
+        bus_event = ParkedCallSwapEvent(
+            event,
+            tenant_uuid
         )
-        bus_event.routing_key = 'calls.parking.parked_call_swap'
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_timeout(self, event):
-        bus_event = ArbitraryEvent(
-            name='parking_parked_call_timeout',
-            body=event,
-            required_acl='events.parking'
+        tenant_uuid = self._extract_tenant_uuid(event)
+        bus_event = ParkedCallTimeoutEvent(
+            event,
+            tenant_uuid
         )
-        bus_event.routing_key = 'calls.parking.parked_call_timeout'
         self.bus_publisher.publish(bus_event)
+
+    def _extract_tenant_uuid(self, event):
+        _, id_parking = event['data']['Parkinglot'].split('-')
+        parkinglot = self.confd.parkinglots.get(id_parking)
+        return parkinglot['tenant_uuid']
