@@ -4,15 +4,50 @@
 import logging
 
 from .events import (
-    ParkedCallEvent
+    ParkedCallEvent,
     UnParkedCallEvent,
     ParkedCallGiveUpEvent,
     ParkedCallSwapEvent,
-    ParkedCallTimeoutEvent,
+    ParkedCallTimeoutEvent
 )
 
 
 logger = logging.getLogger(__name__)
+
+
+def camel_to_snake(s):
+    exceptions = {
+        "ParkeeCallerIDNum": "parkee_caller_id_num",
+        "ParkeeCallerIDName": "parkee_caller_id_name"
+    }
+
+    if s in exceptions:
+        return exceptions[s]
+
+    snake = ""
+    for char in s:
+        if char.isupper():
+            if snake:
+                snake += "_"
+            snake += char.lower()
+        else:
+            snake += char
+    return snake
+
+def convert_keys(obj):
+    if isinstance(obj, dict):
+        new_dict = {}
+        for k, v in obj.items():
+            new_key = camel_to_snake(k)
+            new_dict[new_key] = convert_keys(v)
+        return new_dict
+    elif isinstance(obj, list):
+        new_list = []
+        for item in obj:
+            new_list.append(convert_keys(item))
+        return new_list
+    else:
+        return obj
 
 
 class ParkingBusEventHandler:
@@ -29,46 +64,51 @@ class ParkingBusEventHandler:
         bus_consumer.subscribe('ParkedCallTimeOut', self._parked_call_timeout)
 
     def _parked_call(self, event):
-        tenant_uuid = self._extract_tenant_uuid(event)
+        ev = convert_keys(event)
+        tenant_uuid = self._extract_tenant_uuid(ev)
         bus_event = ParkedCallEvent(
-            event,
+            ev,
             tenant_uuid
         )
         self.bus_publisher.publish(bus_event)
 
     def _unparked_call(self, event):
-        tenant_uuid = self._extract_tenant_uuid(event)
+        ev = convert_keys(event)
+        tenant_uuid = self._extract_tenant_uuid(ev)
         bus_event = UnParkedCallEvent(
-            event,
+            ev,
             tenant_uuid
         )
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_give_up(self, event):
-        tenant_uuid = self._extract_tenant_uuid(event)
+        ev = convert_keys(event)
+        tenant_uuid = self._extract_tenant_uuid(ev)
         bus_event = ParkedCallGiveUpEvent(
-            event,
+            ev,
             tenant_uuid
         )
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_swap(self, event):
-        tenant_uuid = self._extract_tenant_uuid(event)
+        ev = convert_keys(event)
+        tenant_uuid = self._extract_tenant_uuid(ev)
         bus_event = ParkedCallSwapEvent(
-            event,
+            ev,
             tenant_uuid
         )
         self.bus_publisher.publish(bus_event)
 
     def _parked_call_timeout(self, event):
-        tenant_uuid = self._extract_tenant_uuid(event)
+        ev = convert_keys(event)
+        tenant_uuid = self._extract_tenant_uuid(ev)
         bus_event = ParkedCallTimeoutEvent(
-            event,
+            ev,
             tenant_uuid
         )
         self.bus_publisher.publish(bus_event)
 
     def _extract_tenant_uuid(self, event):
-        _, id_parking = event['Parkinglot'].split('-')
+        _, id_parking = event['parkinglot'].split('-')
         parkinglot = self.confd.parking_lots.get(id_parking)
         return parkinglot['tenant_uuid']
