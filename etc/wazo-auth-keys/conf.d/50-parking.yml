@@ -3,3 +3,4 @@ wazo-calld:
   acl:
     - 'amid.action.parkinglots.*'
     - 'amid.action.parkedcalls.*'
+    - 'amid.action.park.create'

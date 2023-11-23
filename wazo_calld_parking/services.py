@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: GPL-3.0+
 
 import logging
-import urllib
 
 
 class ParkingService:
 
-    def __init__(self, amid, confd):
+    def __init__(self, amid, confd, ari):
         self.amid = amid
         self.confd = confd
+        self.ari = ari
 
     def list_parking(self, tenant_uuid):
         self.confd.set_tenant(tenant_uuid)
@@ -32,9 +32,12 @@ class ParkingService:
         if not self._check_parking_tenant_uuid(tenant_uuid, parking_name):
             return []
 
+        channel = self.ari.channels.get(channelId=params.get('call_id'))
+        channel_name = channel.json['name']
+
         park_action = {
             'Parkinglot': parking_name,
-            'Channel': urllib.unquote(params.get('channel')),
+            'Channel': channel_name,
             'AnnounceChannel': params.get('announce_channel'),
             'Timeout': params.get('timeout'),
             'TimeoutChannel': params.get('timeout_channel'),

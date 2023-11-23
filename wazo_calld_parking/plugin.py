@@ -17,6 +17,7 @@ class Plugin(object):
 
     def load(self, dependencies):
         api = dependencies['api']
+        ari = dependencies['ari']
         bus_publisher = dependencies['bus_publisher']
         config = dependencies['config']
         token_changed_subscribe = dependencies['token_changed_subscribe']
@@ -31,7 +32,7 @@ class Plugin(object):
 
         parking_service = ParkingService(amid_client, confd_client)
 
-        parking_bus_event_handler = ParkingBusEventHandler(bus_publisher, confd_client)
+        parking_bus_event_handler = ParkingBusEventHandler(bus_publisher, confd_client, ari.client)
         parking_bus_event_handler.subscribe(bus_consumer)
 
         api.add_resource(ParkingListResource, '/parking', resource_class_args=[parking_service])

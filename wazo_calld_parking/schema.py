@@ -22,7 +22,7 @@ class ParkingListSchema(Schema):
 
 class ParkSchema(Schema):
     parking_name = fields.Str(validate=Length(min=1))
-    channel = fields.Str()
+    call_id = fields.Str()
     announce_channel = fields.Str()
     timeout = fields.Integer()
     timeout_channel = fields.Integer()
