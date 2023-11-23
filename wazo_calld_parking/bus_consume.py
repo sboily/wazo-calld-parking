@@ -69,6 +69,6 @@ class ParkingBusEventHandler:
         self.bus_publisher.publish(bus_event)
 
     def _extract_tenant_uuid(self, event):
-        _, id_parking = event['data']['Parkinglot'].split('-')
-        parkinglot = self.confd.parkinglots.get(id_parking)
+        _, id_parking = event['Parkinglot'].split('-')
+        parkinglot = self.confd.parking_lots.get(id_parking)
         return parkinglot['tenant_uuid']
