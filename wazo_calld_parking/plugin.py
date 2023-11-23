@@ -29,7 +29,7 @@ class Plugin(object):
         token_changed_subscribe(amid_client.set_token)
         token_changed_subscribe(confd_client.set_token)
 
-        parking_service = ParkingService(amid_client)
+        parking_service = ParkingService(amid_client, confd_client)
 
         parking_bus_event_handler = ParkingBusEventHandler(bus_publisher, confd_client)
         parking_bus_event_handler.subscribe(bus_consumer)

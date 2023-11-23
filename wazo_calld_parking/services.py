@@ -7,10 +7,14 @@ import urllib
 
 class ParkingService:
 
-    def __init__(self, amid):
+    def __init__(self, amid, confd):
         self.amid = amid
+        self.confd = confd
 
-    def list_parking(self):
+    def list_parking(self, tenant_uuid):
+        self.confd.set_tenant(tenant_uuid)
+        parking = self.confd.parking_lots.list()
+        return parking
         parking_list = self.amid.action('parkinglots')
         p = []
         for parking in parking_list:
@@ -18,7 +22,10 @@ class ParkingService:
                 p.append(self._parking(parking))
         return p
 
-    def get_parked_calls(self, parking_name):
+    def get_parked_calls(self, parking_name, tenant_uuid):
+        if not self._check_parking_tenant_uuid(tenant_uuid, parking_name):
+            return []
+
         parked_calls = self.amid.action('parkedcalls', {'ParkingLot': parking_name})
         p = []
         for park in parked_calls:
@@ -27,7 +34,10 @@ class ParkingService:
                 p.append(self._parked_call(park))
         return p
 
-    def park_call(self, parking_name, params):
+    def park_call(self, parking_name, params, tenant_uuid):
+        if not self._check_parking_tenant_uuid(tenant_uuid, parking_name):
+            return []
+
         park_action = {
             'Parkinglot': parking_name,
             'Channel': urllib.unquote(params.get('channel')),
@@ -37,6 +47,11 @@ class ParkingService:
         }
         parking = self.amid.action('park', park_action)
         return None
+
+    def _check_parking_tenant_uuid(tenant_uuid, parking_name):
+        self.confd.set_tenant(tenant_uuid)
+        _, id_parking = parking_name.split('-')
+        return self.confd.parking_lots.get(id_parking)
 
     def _parking(self, parking):
         return {
