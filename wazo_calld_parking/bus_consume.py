@@ -26,7 +26,7 @@ class ParkingBusEventHandler:
         bus_consumer.subscribe('UnParkedCall', self._unparked_call)
         bus_consumer.subscribe('ParkedCallGiveUp', self._parked_call_give_up)
         bus_consumer.subscribe('ParkedCallSwap', self._parked_call_swap)
-        bus_consumer.subscribe('ParkedCallTimeout', self._parked_call_timeout)
+        bus_consumer.subscribe('ParkedCallTimeOut', self._parked_call_timeout)
 
     def _parked_call(self, event):
         tenant_uuid = self._extract_tenant_uuid(event)
