@@ -24,9 +24,7 @@ class ParkingListResource(AuthResource):
         tenant = Tenant.autodetect()
         parking_list = self._parking_service.list_parking(tenant.uuid)
 
-        return {
-            'items': parking_list_schema.dump(parking_list, many=True)
-        }, 200
+        return parking_list, 200
 
 
 class ParkingResource(AuthResource):
@@ -37,9 +35,9 @@ class ParkingResource(AuthResource):
     @required_acl('calld.users.me.parking.{parking_name}.read')
     def get(self, parking_name):
         tenant = Tenant.autodetect()
-        return {
-                'items': self._parking_service.get_parked_calls(parking_name, tenant.uuid)
-        }, 200
+        parking = self._parking_service.get_parked_calls(parking_name, tenant.uuid)
+
+        return parking, 200
 
     @required_acl('calld.users.me.parking.{parking_name}.park.create')
     def post(self, parking_name):

@@ -15,12 +15,6 @@ class ParkingService:
         self.confd.set_tenant(tenant_uuid)
         parking = self.confd.parking_lots.list()
         return parking
-        parking_list = self.amid.action('parkinglots')
-        p = []
-        for parking in parking_list:
-            if parking.get('Event') == 'Parkinglot':
-                p.append(self._parking(parking))
-        return p
 
     def get_parked_calls(self, parking_name, tenant_uuid):
         if not self._check_parking_tenant_uuid(tenant_uuid, parking_name):
@@ -48,7 +42,7 @@ class ParkingService:
         parking = self.amid.action('park', park_action)
         return None
 
-    def _check_parking_tenant_uuid(tenant_uuid, parking_name):
+    def _check_parking_tenant_uuid(self, tenant_uuid, parking_name):
         self.confd.set_tenant(tenant_uuid)
         _, id_parking = parking_name.split('-')
         return self.confd.parking_lots.get(id_parking)
