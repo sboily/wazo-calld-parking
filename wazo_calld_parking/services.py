@@ -34,13 +34,23 @@ class ParkingService:
         channel = self.ari.channels.get(channelId=params.get('call_id'))
         channel_name = channel.json['name']
 
+        callback_channel = params.get('callback_channel')
+
+        announce_channel = params.get('announce_channel')
+        timeout = params.get('timeout')
+
         park_action = {
             'Parkinglot': parking_name,
             'Channel': channel_name,
-            'AnnounceChannel': params.get('announce_channel'),
-            'Timeout': params.get('timeout'),
-            'TimeoutChannel': params.get('timeout_channel'),
+            'TimeoutChannel': callback_channel
         }
+
+        if announce_channel:
+            park_action['AnnounceChannel'] = announce_channel
+
+        if timeout:
+            park_action['Timeout'] = timeout * 1000
+
         parking = self.amid.action('park', park_action)
         return None
 

@@ -23,9 +23,9 @@ class ParkingListSchema(Schema):
 class ParkSchema(Schema):
     parking_name = fields.Str(validate=Length(min=1))
     call_id = fields.Str()
-    announce_channel = fields.Str()
+    callback_channel = fields.Str()
     timeout = fields.Integer()
-    timeout_channel = fields.Integer()
+    announce_channel = fields.Str()
 
 
 parking_list_schema = ParkingListSchema()
