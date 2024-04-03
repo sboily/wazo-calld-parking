@@ -1,3 +1,9 @@
+PLEASE NOTE: DEPRECATED SINCE 25.05 BECAUSE WAS INCLUDED.
+
+ref. https://github.com/wazo-platform/wazo-calld/pull/309
+
+-------------
+
 Add parking control to wazo-calld
 
 Installation
